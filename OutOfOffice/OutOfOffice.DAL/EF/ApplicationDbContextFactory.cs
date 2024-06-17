@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
-using OutOfOffice.DAL.EF;
 
-namespace OutOfOffice.DAL;
+namespace OutOfOffice.DAL.EF;
 
 class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {

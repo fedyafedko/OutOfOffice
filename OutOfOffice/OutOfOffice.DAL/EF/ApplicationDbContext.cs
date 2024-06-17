@@ -18,5 +18,15 @@ public class ApplicationDbContext : IdentityDbContext<Employee, IdentityRole<int
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Employee>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasOne(e => e.PeoplePartner)
+                  .WithMany()
+                  .HasForeignKey(e => e.PeoplePartnerId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }

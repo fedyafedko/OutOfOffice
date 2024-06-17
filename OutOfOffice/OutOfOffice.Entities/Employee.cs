@@ -9,9 +9,9 @@ public class Employee : IdentityUser<int>
     public string FullName { get; set; } = string.Empty;
     public Subdivision Subdivision { get; set; }
     public Position Position { get; set; }
-    public Status Status { get; set; }
+    public Status Status { get; set; } = Status.Active;
     [ForeignKey(nameof(Employee))]
-    public int PeoplePartnerId { get; set; }
+    public int? PeoplePartnerId { get; set; } 
     public decimal OutOfOfficeBalance { get; set; }
     public string? Photo { get; set; } = string.Empty;
 
