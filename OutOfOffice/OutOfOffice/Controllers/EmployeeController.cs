@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Presentation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OutOfOffice.BLL.Interfaces;
+using OutOfOffice.Common.DTOs.Employee;
 using OutOfOffice.Common.Extensions;
-using OutOfOffice.Common.Requests;
 using OutOfOffice.Entities.Enums;
 
 namespace OutOfOffice.Controllers;
@@ -20,9 +21,9 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetEmployees([FromQuery] SortRequest request)
+    public async Task<IActionResult> GetEmployees()
     {
-        var employees = await _employeeService.GetEmployeesAsync(request);
+        var employees = await _employeeService.GetEmployeesAsync();
 
         return Ok(employees);
     }
@@ -36,7 +37,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    [Authorize(Roles = "HR Manager")]
+    [Authorize(Roles = "HR manager")]
     public async Task<IActionResult> AddEmployeeToHR(int employeeId)
     {
         var hrId = HttpContext.GetUserId();
@@ -46,11 +47,28 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    [Authorize(Roles = "HR Manager")]
+    public async Task<IActionResult> UpdateEmployee(UpdateEmployeeDTO dto)
+    {
+        var result = await _employeeService.UpdateEmployeeAsync(dto);
+
+        return Ok(result);
+    }
+
+    [HttpPut("[action]")]
+    [Authorize(Roles = "HR manager")]
     public async Task<IActionResult> DisactiveEmployee(int employeeId, Status status)
     {
         var result = await _employeeService.DisactiveEmployeeAsync(employeeId, status);
 
         return Ok(result);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetRole()
+    {
+        var employeeId = HttpContext.GetUserId();
+        var employees = await _employeeService.GetRole(employeeId);
+
+        return Ok(employees);
     }
 }

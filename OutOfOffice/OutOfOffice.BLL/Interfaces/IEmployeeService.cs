@@ -9,5 +9,7 @@ public interface IEmployeeService
     Task<bool> AddEmployeeToHRAsync(int hrId, int employeeId);
     Task<bool> DisactiveEmployeeAsync(int employeeId, Status status);
     Task<EmployeeDTO> GetEmployeeById(int employeeId);
-    Task<List<EmployeeDTO>> GetEmployeesAsync(SortRequest request);
+    Task<List<EmployeeDTO>> GetEmployeesAsync();
+    Task<string> GetRole(int employeeId);
+    Task<EmployeeDTO> UpdateEmployeeAsync(UpdateEmployeeDTO dto);
 }

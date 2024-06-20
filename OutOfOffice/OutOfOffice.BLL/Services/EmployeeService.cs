@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using OutOfOffice.BLL.Interfaces;
 using OutOfOffice.Common.DTOs.Employee;
 using OutOfOffice.Common.Exceptions;
-using OutOfOffice.Common.Requests;
 using OutOfOffice.DAL.Repositories.Interfaces;
 using OutOfOffice.Entities;
 using OutOfOffice.Entities.Enums;
@@ -26,28 +25,9 @@ public class EmployeeService : IEmployeeService
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<List<EmployeeDTO>> GetEmployeesAsync(SortRequest request)
+    public async Task<List<EmployeeDTO>> GetEmployeesAsync()
     {
         var employees = await _userManager.GetUsersInRoleAsync("Employee");
-
-        if (!string.IsNullOrEmpty(request.SortBy))
-        {
-            var sortBy = request.SortBy.ToLower();
-
-            var sortingDictionary = new Dictionary<string, Func<IQueryable<Employee>, IOrderedQueryable<Employee>>>
-        {
-            { nameof(Employee.FullName).ToLower(), query => query.OrderBy(e => e.FullName) },
-            { nameof(Employee.Email).ToLower(), query => query.OrderBy(e => e.Email) },
-            { nameof(Employee.Position).ToLower(), query => query.OrderBy(e => e.Position) },
-            { nameof(Employee.Subdivision).ToLower(), query => query.OrderBy(e => e.Subdivision) },
-            { nameof(Employee.Status).ToLower(), query => query.OrderBy(e => e.Status) }
-        };
-
-            if (sortingDictionary.TryGetValue(sortBy, out var orderBy))
-            {
-                employees = orderBy(employees.AsQueryable()).ToList();
-            }
-        }
 
         return _mapper.Map<List<EmployeeDTO>>(employees);
     }
@@ -56,6 +36,28 @@ public class EmployeeService : IEmployeeService
     {
         var employee = await _userManager.FindByIdAsync(employeeId.ToString())
             ?? throw new NotFoundException($"Unable to find employee by specified id. Id: {employeeId}");
+
+        return _mapper.Map<EmployeeDTO>(employee);
+    }
+
+    public async Task<string> GetRole(int employeeId)
+    {
+        var employee = await _userManager.FindByIdAsync(employeeId.ToString())
+            ?? throw new NotFoundException($"Unable to find employee by specified id. Id: {employeeId}");
+
+        var roles = await _userManager.GetRolesAsync(employee);
+
+        return roles.First();
+    }
+
+    public async Task<EmployeeDTO> UpdateEmployeeAsync(UpdateEmployeeDTO dto)
+    {
+        var employee = await _userManager.FindByIdAsync(dto.Id.ToString())
+            ?? throw new NotFoundException($"Unable to find employee by specified id. Id: {dto.Id}");
+
+        employee = _mapper.Map(dto, employee);
+
+        await _employeeRepository.UpdateAsync(employee);
 
         return _mapper.Map<EmployeeDTO>(employee);
     }

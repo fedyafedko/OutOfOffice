@@ -8,7 +8,7 @@ public class EmployeeDTO
     public string Subdivision { get; set; } = string.Empty;
     public string Position { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
-    public EmployeeDTO PeoplePartnerId { get; set; } = null!;
+    public EmployeeDTO PeoplePartner { get; set; } = null!;
     public decimal OutOfOfficeBalance { get; set; }
     public string? Photo { get; set; } = string.Empty;
 }

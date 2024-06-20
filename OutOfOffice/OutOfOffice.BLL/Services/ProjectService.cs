@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.BLL.Interfaces;
 using OutOfOffice.Common.DTOs;
@@ -12,11 +14,28 @@ namespace OutOfOffice.BLL.Services;
 public class ProjectService : IProjectService
 {
     private readonly IRepository<Project> _projectRepository;
+    private readonly UserManager<Employee> _userManager;
     private readonly IMapper _mapper;
-    public ProjectService(IRepository<Project> projectRepository, IMapper mapper)
+    public ProjectService(IRepository<Project> projectRepository, IMapper mapper, UserManager<Employee> userManager)
     {
         _projectRepository = projectRepository;
         _mapper = mapper;
+        _userManager = userManager;
+    }
+
+    public async Task<bool> AddToProjectAsync(AddToProjectRequest request)
+    {
+        var employee = await _userManager.FindByIdAsync(request.EmployeeId.ToString())
+            ?? throw new NotFoundException("Project not found");    
+
+        var project = await _projectRepository.FirstOrDefaultAsync(x => x.Id == request.ProjectId)
+            ?? throw new NotFoundException("Project not found");
+
+        project.EmployeeId = employee.Id;
+
+        var result = _projectRepository.Update(project);
+
+        return result;
     }
 
     public async Task<ProjectDTO> AddProjectAsync(CreateProjectDTO projectDTO)
@@ -36,27 +55,9 @@ public class ProjectService : IProjectService
         return _mapper.Map<ProjectDTO>(project);
     }
 
-    public async Task<List<ProjectDTO>> GetProjectsAsync(SortRequest request)
+    public async Task<List<ProjectDTO>> GetProjectsAsync()
     {
         var projects = await _projectRepository.Include(x => x.Employee).ToListAsync();
-
-        if (!string.IsNullOrEmpty(request.SortBy))
-        {
-            var sortBy = request.SortBy.ToLower();
-
-            var sortingDictionary = new Dictionary<string, Func<IQueryable<Project>, IOrderedQueryable<Project>>>
-            {
-                { nameof(Project.ProjectType).ToLower(), query => query.OrderBy(e => e.ProjectType) },
-                { nameof(Project.StartDate).ToLower(), query => query.OrderBy(e => e.StartDate) },
-                { nameof(Project.EndDate).ToLower(), query => query.OrderBy(e => e.EndDate) },
-                { nameof(Project.Comment).ToLower(), query => query.OrderBy(e => e.Comment) },
-            };
-
-            if (sortingDictionary.TryGetValue(sortBy, out var orderBy))
-            {
-                projects = orderBy(projects.AsQueryable()).ToList();
-            }
-        }
 
         return _mapper.Map<List<ProjectDTO>>(projects);
     }

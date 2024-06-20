@@ -19,9 +19,9 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProjects(SortRequest request)
+    public async Task<IActionResult> GetProjects()
     {
-        var result = await _projectService.GetProjectsAsync(request);
+        var result = await _projectService.GetProjectsAsync();
 
         return Ok(result);
     }
@@ -49,6 +49,15 @@ public class ProjectController : ControllerBase
     public async Task<IActionResult> AddProject(CreateProjectDTO dto)
     {
         var result = await _projectService.AddProjectAsync(dto);
+
+        return Ok(result);
+    }
+
+    [HttpPost("[action]")]
+    [Authorize(Roles = "Project manager")]
+    public async Task<IActionResult> AddToProject(AddToProjectRequest request)
+    {
+        var result = await _projectService.AddToProjectAsync(request);
 
         return Ok(result);
     }

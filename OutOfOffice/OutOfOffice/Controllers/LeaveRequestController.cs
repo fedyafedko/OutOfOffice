@@ -20,9 +20,9 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLeaveRequests([FromQuery] SortRequest request)
+        public async Task<IActionResult> GetLeaveRequests()
         {
-            var result = await _leaveRequestService.GetLeaveRequestsAsync(request);
+            var result = await _leaveRequestService.GetLeaveRequestsAsync();
 
             return Ok(result);
         }
@@ -36,7 +36,7 @@ namespace OutOfOffice.Controllers
         }
 
         [HttpPut("[action]")]
-        [Authorize(Roles = "HR Manager")]
+        [Authorize(Roles = "HR manager")]
         public async Task<IActionResult> IsApproved(IsApprovedRequest request)
         {
             var result = await _leaveRequestService.IsApprovedAsync(request);

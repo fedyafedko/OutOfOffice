@@ -30,31 +30,12 @@ public class LeaveRequestService : ILeaveRequestService
         _mapper = mapper;
     }
 
-    public async Task<List<LeaveRequestDTO>> GetLeaveRequestsAsync(SortRequest request)
+    public async Task<List<LeaveRequestDTO>> GetLeaveRequestsAsync()
     {
         var leaveRequests = await _leaveRequestRepository
             .Include(x => x.Employee)
             .Include(x => x.ApprovalRequest)
             .ToListAsync();
-
-        if (!string.IsNullOrEmpty(request.SortBy))
-        {
-            var sortBy = request.SortBy.ToLower();
-
-            var sortingDictionary = new Dictionary<string, Func<IQueryable<LeaveRequest>, IOrderedQueryable<LeaveRequest>>>
-        {
-            { nameof(LeaveRequest.AbsenceReason).ToLower(), query => query.OrderBy(e => e.AbsenceReason) },
-            { nameof(LeaveRequest.StartDate).ToLower(), query => query.OrderBy(e => e.StartDate) },
-            { nameof(LeaveRequest.EndDate).ToLower(), query => query.OrderBy(e => e.EndDate) },
-            { nameof(LeaveRequest.Comment).ToLower(), query => query.OrderBy(e => e.Comment) },
-            { nameof(LeaveRequest.Status).ToLower(), query => query.OrderBy(e => e.Status) }
-        };
-
-            if (sortingDictionary.TryGetValue(sortBy, out var orderBy))
-            {
-                leaveRequests = orderBy(leaveRequests.AsQueryable()).ToList();
-            }
-        }
 
         return _mapper.Map<List<LeaveRequestDTO>>(leaveRequests);
     }
@@ -102,7 +83,7 @@ public class LeaveRequestService : ILeaveRequestService
     public async Task<LeaveRequestDTO> AddLeaveRequestAsync(int id, CreateLeaveRequestDTO request)
     {
         var leaveRequest = _mapper.Map<LeaveRequest>(request);
-        leaveRequest.Id = id;
+        leaveRequest.EmployeeId = id;
 
         await _leaveRequestRepository.InsertAsync(leaveRequest);
 
