@@ -10,6 +10,7 @@ public class ProjectProfile : Profile
     {
         CreateMap<Project, ProjectDTO>();
         CreateMap<CreateProjectDTO, Project>();
-        CreateMap<UpdateProjectDTO, Project>();
+        CreateMap<UpdateProjectDTO, Project>()
+            .ForMember(dest => dest.EmployeeId, opt => opt.Ignore());
     }
 }

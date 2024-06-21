@@ -12,7 +12,7 @@ public class Employee : IdentityUser<int>
     public Status Status { get; set; } = Status.Active;
     [ForeignKey(nameof(Employee))]
     public int? PeoplePartnerId { get; set; } 
-    public decimal OutOfOfficeBalance { get; set; }
+    public decimal? OutOfOfficeBalance { get; set; }
     public string? Photo { get; set; } = string.Empty;
 
     public Employee PeoplePartner { get; set; } = null!;

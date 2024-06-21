@@ -8,5 +8,4 @@ public class CreateLeaveRequestDTO
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string? Comment { get; set; } = string.Empty;
-    public StatusLeaveRequest Status { get; set; } = StatusLeaveRequest.New;
 }

@@ -44,7 +44,7 @@ const LeaveRequest = {
         return response.error;
     },
     add: async (request: AddLeaveRequestRequest): Promise<LeaveRequestResponse> => {
-        const response = await Api.put<AddLeaveRequestRequest, LeaveRequestResponse>(`/LeaveRequest/AddLeaveRequest`, request);
+        const response = await Api.post<AddLeaveRequestRequest, LeaveRequestResponse>(`/LeaveRequest/AddLeaveRequest`, request);
 
         if (response.success) {
             return response.data as LeaveRequestResponse;

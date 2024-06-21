@@ -63,6 +63,9 @@ public class LeaveRequestService : ILeaveRequestService
 
         if (request.IsApproved)
         {
+            if (request.OutOfOfficeBalance == null)
+                throw new IncorrectParametersException("Not enough out of office balance");
+
             leaveRequest.Employee.OutOfOfficeBalance = request.OutOfOfficeBalance;
             aprovalRequest.Status = StatusApprovalRequest.Approve;
 
@@ -74,7 +77,7 @@ public class LeaveRequestService : ILeaveRequestService
             aprovalRequest.Status = StatusApprovalRequest.Reject;
             aprovalRequest.Comment = request.Comment;
 
-            await _employeeRepository.UpdateAsync(leaveRequest.Employee);
+            await _approvalRequestRepository.UpdateAsync(aprovalRequest);
         }
          
         return true;

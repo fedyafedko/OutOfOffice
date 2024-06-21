@@ -5,7 +5,6 @@ interface AddLeaveRequestRequest extends ApiRequestBase{
     startDate: Date;
     endDate: Date;
     comment: string;
-    status: string;
 }
 
 export default AddLeaveRequestRequest;

@@ -1,6 +1,6 @@
 import { ApiRequestBase } from "./ApiRequestBase";
 
-interface UpdateProjectRequestRequest extends ApiRequestBase{
+interface UpdateProjectRequest extends ApiRequestBase{
     id: number;
     projectType: string;
     startDate: Date;
@@ -8,4 +8,4 @@ interface UpdateProjectRequestRequest extends ApiRequestBase{
     comment: string;
 }
 
-export default UpdateProjectRequestRequest;
+export default UpdateProjectRequest;

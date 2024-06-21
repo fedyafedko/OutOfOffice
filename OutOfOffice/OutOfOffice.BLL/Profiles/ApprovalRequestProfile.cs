@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using OutOfOffice.Common.DTOs;
+using OutOfOffice.Entities;
 
 namespace OutOfOffice.BLL.Profiles;
 
-public class ApprovalRequest : Profile
+public class ApprovalRequestProfile : Profile
 {
-    public ApprovalRequest()
+    public ApprovalRequestProfile()
     {
         CreateMap<ApprovalRequest, ApprovalRequestDTO>();
     }

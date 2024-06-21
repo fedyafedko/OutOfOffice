@@ -149,13 +149,19 @@ const EmployeeTable = () => {
         if (response != null) {
             window.location.reload();
         }
-      };
+    };
 
     return (
         <TableContainer component={Paper} sx={{ width: 1500 }}>
             <Table sx={{ width: '100%' }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
+                    <StyledTableCell>
+                            Id
+                            <IconButton onClick={() => handleSort('id')} color="primary">
+                                {sortConfig?.key === 'id' && sortConfig.direction === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                            </IconButton>
+                        </StyledTableCell>
                         <StyledTableCell>
                             Full Name
                             <IconButton onClick={() => handleSort('fullName')} color="primary">
@@ -188,24 +194,27 @@ const EmployeeTable = () => {
                         </StyledTableCell>
                         {role === "HR manager" && (
                             <>
-                        <StyledTableCell>
-                            Update
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            Add
-                        </StyledTableCell>
-                        </>
+                                <StyledTableCell>
+                                    Update
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    Add
+                                </StyledTableCell>
+                            </>
                         )}
-                         {role === "Project manager" && (
-                        <StyledTableCell>
-                            View
-                        </StyledTableCell>
+                        {role === "Project manager" && (
+                            <StyledTableCell>
+                                View
+                            </StyledTableCell>
                         )}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {sortedData.map((row) => (
                         <StyledTableRow key={row.id}>
+                            <StyledTableCell component="th" scope="row">
+                                    {row.id}
+                            </StyledTableCell>
                             <StyledTableCell component="th" scope="row">
                                 {editRowId === row.id ? (
                                     <TextField
@@ -230,23 +239,23 @@ const EmployeeTable = () => {
                             </StyledTableCell>
                             <StyledTableCell>
                                 {editRowId === row.id ? (
-                                     <FormControl fullWidth sx={{ display: 'flex', flexDirection: 'row' }}>
-                                     <InputLabel id="demo-simple-select-label">Subdivision</InputLabel>
-                                     <Select
-                                         labelId="demo-simple-select-label"
-                                         id="demo-simple-select"
-                                         value={subdivision}
-                                         label="Subdivision"
-                                         onChange={handleSubdivisionChange}
-                                         sx={{ width: '95%' }}
-                                     >
-                                         {subdivisionOptions.map((option) => (
-                                             <MenuItem key={option.value} value={option.value}>
-                                                 {option.label}
-                                             </MenuItem>
-                                         ))}
-                                     </Select>
-                                 </FormControl>
+                                    <FormControl fullWidth sx={{ display: 'flex', flexDirection: 'row' }}>
+                                        <InputLabel id="demo-simple-select-label">Subdivision</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={subdivision}
+                                            label="Subdivision"
+                                            onChange={handleSubdivisionChange}
+                                            sx={{ width: '95%' }}
+                                        >
+                                            {subdivisionOptions.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                 ) : (
                                     row.subdivision
                                 )}
@@ -254,52 +263,52 @@ const EmployeeTable = () => {
                             <StyledTableCell>
                                 {editRowId === row.id ? (
                                     <FormControl fullWidth sx={{ display: 'flex', flexDirection: 'row', }}>
-                                    <InputLabel id="demo-simple-select-label">Position</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={position}
-                                        label="Position"
-                                        onChange={handlePositionChange}
-                                        sx={{ width: '100%' }}
-                                    >
-                                        {positionOptions.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+                                        <InputLabel id="demo-simple-select-label">Position</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={position}
+                                            label="Position"
+                                            onChange={handlePositionChange}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            {positionOptions.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                 ) : (
                                     row.position
                                 )}
                             </StyledTableCell>
                             <StyledTableCell>
-                                    {row.status}
-                                    <Switch
-    checked={row.status === 'Active'}
-    onChange={(event) => handleSwitchChange(event, row.id, row.status)}
-    inputProps={{ 'aria-label': 'controlled' }}
-/>
+                                {row.status}
+                                <Switch
+                                    checked={row.status === 'Active'}
+                                    onChange={(event) => handleSwitchChange(event, row.id, row.status)}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
                             </StyledTableCell>
                             {role === "HR manager" && (
-                            <>
-                            <StyledTableCell>
-                                {editRowId === row.id ? (
-                                    <Button onClick={handleSaveClick}>Save</Button>
-                                ) : (
-                                    <Button onClick={() => handleEditClick(row)}>Update</Button>
-                                )}
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                    <Button onClick={() => handleAddClick(row.id)}>Add to HR</Button>
-                            </StyledTableCell>
-                            </>
+                                <>
+                                    <StyledTableCell>
+                                        {editRowId === row.id ? (
+                                            <Button onClick={handleSaveClick}>Save</Button>
+                                        ) : (
+                                            <Button onClick={() => handleEditClick(row)}>Update</Button>
+                                        )}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Button onClick={() => handleAddClick(row.id)}>Add to HR</Button>
+                                    </StyledTableCell>
+                                </>
                             )}
                             {role === "Project manager" && (
-                            <StyledTableCell>
+                                <StyledTableCell>
                                     <Button onClick={() => navigate(`/employee/${row.id}`)}>View</Button>
-                            </StyledTableCell>
+                                </StyledTableCell>
                             )}
                         </StyledTableRow>
                     ))}

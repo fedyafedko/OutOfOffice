@@ -5,6 +5,7 @@ interface AddProjectRequestRequest extends ApiRequestBase{
     startDate: Date;
     endDate: Date;
     comment: string;
+    employeeId: number;
 }
 
 export default AddProjectRequestRequest;

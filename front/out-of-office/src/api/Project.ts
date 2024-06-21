@@ -41,11 +41,11 @@ const Project = {
 
         return response.error;
     },
-    add: async (request: AddProjectRequest): Promise<ProjectResponse> => {
-        const response = await Api.put<AddProjectRequest, ProjectResponse>(`/Project/AddProject`, request);
+    add: async (request: AddProjectRequest): Promise<any> => {
+        const response = await Api.post<AddProjectRequest, ProjectResponse>(`/Project/AddProject`, request);
 
         if (response.success) {
-            return response.data as ProjectResponse;
+            return undefined;
         }
 
         return response.error;

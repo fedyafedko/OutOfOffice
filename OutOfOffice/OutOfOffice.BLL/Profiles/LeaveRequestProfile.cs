@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using OutOfOffice.Common.DTOs;
+using OutOfOffice.Entities;
 
 namespace OutOfOffice.BLL.Profiles;
 
-public class LeaveRequest : Profile
+public class LeaveRequestProfile : Profile
 {
-    public LeaveRequest()
+    public LeaveRequestProfile()
     {
-        CreateMap<LeaveRequest,LeaveRequestDTO>();
+        CreateMap<LeaveRequest, LeaveRequestDTO>();
         CreateMap<CreateLeaveRequestDTO, LeaveRequest>();
     }
 }

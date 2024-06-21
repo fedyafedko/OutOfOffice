@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeaveRequest from '../../api/LeaveRequest';
 import LeaveRequestResponse from '../../api/models/response/LeaveRequestResponse';
+import AddLeaveRequestWindow from '../AddLeaveRequestWindow/AddLeaveRequestWindow';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -41,8 +42,17 @@ type SortConfig = { key: SortKey, direction: 'asc' | 'desc' };
 const LeaveRequestTable = () => {
     const [data, setData] = useState<LeaveRequestResponse[]>([]);
     const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
-    ;
+    const [role, setRole] = React.useState<string>('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const role = await Employee.getRoles();
+            setRole(role);
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,13 +87,14 @@ const LeaveRequestTable = () => {
         return sortableData;
     }, [data, sortConfig]);
 
-
-    const handleAddClick = async (id: number) => {
-        var response = await Employee.addToHR(id);
-        console.log(response);
-    };
-
     return (
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px'
+        }}>
+            { role == "Employee" ? <AddLeaveRequestWindow /> : null }
         <TableContainer component={Paper} sx={{ width: 1500 }}>
             <Table sx={{ width: '100%' }} aria-label="customized table">
                 <TableHead>
@@ -118,15 +129,17 @@ const LeaveRequestTable = () => {
                                 {sortConfig?.key === 'status' && sortConfig.direction === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                             </IconButton>
                         </StyledTableCell>
-                        <StyledTableCell>
-                            Approve
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            Reject
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            View
-                        </StyledTableCell>
+                        {role == "Employee" ? 
+                            <>
+                            <StyledTableCell>
+                                Cancel
+                            </StyledTableCell>
+                            </>
+                        :
+                            <StyledTableCell>
+                                View
+                            </StyledTableCell>
+                        }
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -147,21 +160,21 @@ const LeaveRequestTable = () => {
                             <StyledTableCell>
                                 {row.status}
                             </StyledTableCell>
-                            <StyledTableCell>
-                                <Button onClick={() => console.log()}>Update</Button>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Button onClick={() => handleAddClick(row.id)}>Add to HR</Button>
-                            </StyledTableCell>
-
-                            <StyledTableCell>
-                                <Button onClick={() => navigate(`/employee/${row.id}`)}>View</Button>
-                            </StyledTableCell>
+                            {role == "Employee" ? 
+                                <StyledTableCell>
+                                    <Button onClick={async () => await LeaveRequest.canceledLeaveRequest(row.id)}>Cancel</Button>
+                                </StyledTableCell>
+                             :
+                                <StyledTableCell>
+                                    <Button onClick={() => navigate(`/leave-request/${row.id}`)}>View</Button>
+                                </StyledTableCell>
+                            }
                         </StyledTableRow>
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
+        </Box>
     );
 };
 
