@@ -4,8 +4,6 @@
 - Leave Request
 - Approval Request
 - Project
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
