@@ -71,7 +71,7 @@ With a list of projects, the Project manager can:
     
 2. Run back-end:
 
-   Update data-base
+   Update-database
    
    Runing OutOfOffice.sln
     
