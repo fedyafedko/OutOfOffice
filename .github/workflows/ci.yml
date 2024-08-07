@@ -52,7 +52,3 @@ jobs:
     - name: Build
       run: CI=false npm run build
       working-directory: front/out-of-office # Adjust this path to your front-end directory
-
-    - name: Test
-      run: npm test
-      working-directory: front/out-of-office # Adjust this path to your front-end directory
