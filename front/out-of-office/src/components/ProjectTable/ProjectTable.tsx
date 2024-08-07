@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Box, IconButton, TextField, Button, FormControl, MenuItem, Select, SelectChangeEvent, InputLabel, Switch } from '@mui/material';
+import { Box, IconButton, TextField, Button, FormControl, MenuItem, Select, SelectChangeEvent, InputLabel } from '@mui/material';
 import Employee from '../../api/Employee';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -129,7 +129,7 @@ const ProjectTable = () => {
             alignItems: 'center',
             gap: '20px'
         }}>
-            { role == "Employee" ? null : <AddProjectWindow /> }
+            { role === "Employee" ? null : <AddProjectWindow /> }
             <TableContainer component={Paper} sx={{ width: 1500 }}>
                 <Table sx={{ width: '100%' }} aria-label="customized table">
                     <TableHead>

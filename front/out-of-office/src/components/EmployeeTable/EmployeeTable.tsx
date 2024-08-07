@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Box, IconButton, TextField, Button, FormControl, MenuItem, Select, SelectChangeEvent, InputLabel, Switch } from '@mui/material';
+import { IconButton, TextField, Button, FormControl, MenuItem, Select, SelectChangeEvent, InputLabel, Switch } from '@mui/material';
 import Employee from '../../api/Employee';
 import { useEffect, useState } from 'react';
 import EmployeeResponse from '../../api/models/response/EmployeeResponse';

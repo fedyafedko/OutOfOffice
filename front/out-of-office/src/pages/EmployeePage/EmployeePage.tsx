@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import Employee from "../../api/Employee";
 import EmployeeResponse from "../../api/models/response/EmployeeResponse";
 import { useParams } from "react-router-dom";
-import { Box, Avatar, Paper, Typography, Button, Divider, Grid, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import styled from "styled-components";
+import { Box, Avatar, Typography, Button, Divider, Grid, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import ProjectResponse from "../../api/models/response/ProjectResponse";
 import Project from "../../api/Project";
 import AddToProjectRequest from "../../api/models/request/AddToProjectRequest";
@@ -12,23 +11,20 @@ const EmployeePage = () => {
     const [data, setData] = useState<EmployeeResponse>();
     const [projects, setProjects] = useState<ProjectResponse[]>([]);
     const [project, setProject] = useState<string>('');
-    const [role, setRole] = useState<string>('');
     const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
             if (id) {
                 const employee = await Employee.getById(id);
-                const role = await Employee.getRoles();
                 const projects = await Project.getAll();
                 setProjects(projects);
                 setData(employee);
-                setRole(role);
             }
         };
 
         fetchData();
-    }, []);
+    }, [id]);
 
     const handleChange = (event: SelectChangeEvent) => {
         setProject(event.target.value as string);

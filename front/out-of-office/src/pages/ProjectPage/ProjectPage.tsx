@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import Employee from "../../api/Employee";
-import EmployeeResponse from "../../api/models/response/EmployeeResponse";
 import { useParams } from "react-router-dom";
-import { Box, Avatar, Paper, Typography, Button, Divider, Grid, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import styled from "styled-components";
+import { Box, Typography, Divider, Grid } from "@mui/material";
 import ProjectResponse from "../../api/models/response/ProjectResponse";
 import Project from "../../api/Project";
-import AddToProjectRequest from "../../api/models/request/AddToProjectRequest";
 
 const ProjectPage = () => {
     const [data, setData] = useState<ProjectResponse>();
@@ -16,14 +13,12 @@ const ProjectPage = () => {
         const fetchData = async () => {
             if (id) {
             const project = await Project.getById(id);
-            const role = await Employee.getRoles();
-            const projects = await Project.getAll();
             setData(project);
             }
         };
 
         fetchData();
-    }, []);
+    }, [id]);
 
     return (
         <Box sx={{

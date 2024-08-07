@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Box, IconButton, TextField, Button, FormControl, MenuItem, Select, SelectChangeEvent, InputLabel, Switch } from '@mui/material';
+import { Box, IconButton, Button } from '@mui/material';
 import Employee from '../../api/Employee';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -94,7 +94,7 @@ const LeaveRequestTable = () => {
             alignItems: 'center',
             gap: '20px'
         }}>
-            { role == "Employee" ? <AddLeaveRequestWindow /> : null }
+            { role === "Employee" ? <AddLeaveRequestWindow /> : null }
         <TableContainer component={Paper} sx={{ width: 1500 }}>
             <Table sx={{ width: '100%' }} aria-label="customized table">
                 <TableHead>
@@ -129,7 +129,7 @@ const LeaveRequestTable = () => {
                                 {sortConfig?.key === 'status' && sortConfig.direction === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                             </IconButton>
                         </StyledTableCell>
-                        {role == "Employee" ? 
+                        {role === "Employee" ? 
                             <>
                             <StyledTableCell>
                                 Cancel
@@ -160,7 +160,7 @@ const LeaveRequestTable = () => {
                             <StyledTableCell>
                                 {row.status}
                             </StyledTableCell>
-                            {role == "Employee" ? 
+                            {role === "Employee" ? 
                                 <StyledTableCell>
                                     <Button onClick={async () => await LeaveRequest.canceledLeaveRequest(row.id)}>Cancel</Button>
                                 </StyledTableCell>

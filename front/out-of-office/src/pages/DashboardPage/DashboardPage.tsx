@@ -35,7 +35,7 @@ const DashboardPage = () => {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-                        { role == "Employee" ? null : <Tab label="Employees Table" value="1" /> }
+                        { role === "Employee" ? null : <Tab label="Employees Table" value="1" /> }
                         <Tab label="Leave Requests Table" value="2" />
                         <Tab label="Projects Table" value="3" />
                     </TabList>

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material"
+import { Box, Button, Divider, Grid, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Employee from "../../api/Employee";
@@ -10,7 +10,6 @@ const LeaveRequestPage = () => {
     const [data, setData] = useState<LeaveRequestResponse>();
     const [isApproved, setIsApproved] = useState(false);
     const [isReject, setIsReject] = useState(false);
-    const [role, setRole] = useState<string>('');
     const { id } = useParams();
     const [outOfOfficeBalance, setOutOfOfficeBalance] = useState('');
     const [comment, setComment] = useState('');
@@ -19,14 +18,12 @@ const LeaveRequestPage = () => {
         const fetchData = async () => {
             if (id) {
                 const leaveRequest = await LeaveRequest.getById(id);
-                const role = await Employee.getRoles();
                 setData(leaveRequest);
-                setRole(role);
             }
         };
 
         fetchData();
-    }, []);
+    }, [id]);
 
     const handleApproveSubmit = async () => {
         const request: IsApprovedRequest = {
