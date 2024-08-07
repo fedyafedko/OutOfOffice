@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Employee from "../../api/Employee";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import ProjectResponse from "../../api/models/response/ProjectResponse";
