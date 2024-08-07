@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x' # specify your .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x' # specify your Node.js version
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: OutOfOffice/front/out-of-office
+
+    - name: Build
+      run: npm run build
+      working-directory: OutOfOffice/front/out-of-office
+
+    - name: Test
+      run: npm test
+      working-directory: OutOfOffice/front/out-of-office
